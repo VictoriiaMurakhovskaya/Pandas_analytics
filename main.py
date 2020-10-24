@@ -1,4 +1,4 @@
-from tkinter import Tk, Entry, Label, Button, Frame, LabelFrame, LEFT, TOP, StringVar
+from tkinter import Tk, Entry, Label, Button, Frame, LEFT, TOP, StringVar
 from tkinter.ttk import Combobox
 from tkinter import filedialog as fd
 from tkinter import PhotoImage as pim
@@ -8,7 +8,7 @@ import os
 from importlib import import_module
 import pandas as pd
 
-tsk_list = ['Task #{!s}'.format(i) for i in range(1, 10)]
+tsk_list = ['Task #{!s}'.format(i) for i in range(2, 10)]
 df = pd.DataFrame()
 
 
@@ -61,7 +61,7 @@ def run_task():
     if df.empty:
         load_df()
     num = tasks.current()
-    name = 'task'+str(num + 1)
+    name = 'task'+str(num + 2)
     module = import_module(name, package=__name__)
     module.runtask(df, window)
 

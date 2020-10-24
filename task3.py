@@ -1,6 +1,9 @@
 from tkinter import Frame, Toplevel, TOP, LEFT, Button, NO
 from tkinter.ttk import Treeview, Combobox
 from graphs import show_graph
+import pandas as pd
+from tkinter import filedialog as fd
+import re
 
 
 def get_choice(df):
@@ -13,7 +16,6 @@ def runtask(df, window):
 
     showbox = Toplevel(window)
     showbox.geometry("220x210")
-
 
     attributes = Combobox(showbox, values=get_choice(df), width=28)
     attributes.pack(side=TOP, padx=10, pady=(10, 5))
@@ -30,8 +32,9 @@ def runtask(df, window):
     result.pack(side=TOP)
 
     buttons = Frame(showbox)
-    Button(buttons, text='Graph', width=11, command=lambda x=df: launch_graph(x)).pack(side=LEFT, padx=(10, 5))
-    Button(buttons, text='Close', width=11, command=showbox.destroy).pack(side=LEFT, padx=(0, 10))
+    Button(buttons, text='Graph', width=7, command=lambda x=df: launch_graph(x)).pack(side=LEFT, padx=(10, 3))
+    Button(buttons, text='Excel', width=7, command=lambda x=df: to_excel(x)).pack(side=LEFT, padx=(0, 0))
+    Button(buttons, text='Close', width=7, command=showbox.destroy).pack(side=LEFT, padx=(3, 10))
     buttons.pack(side=TOP, padx=10, pady=(10, 10))
 
     attributes.bind('<<ComboboxSelected>>', lambda event, table=result, data=df: change_attribute(event, table, data))
@@ -68,5 +71,19 @@ def fill_result(table, df, col_name):
     y = make_df(df, col_name)
     for index, row in y.iterrows():
         table.insert('', index, values=tuple([str(item) for item in row]))
+
+
+def to_excel(df):
+    filename = fd.asksaveasfilename(defaultextension='.xlsx',
+                                           filetypes=[('MS Excel files', '*.xlsx')])
+    if filename:
+        with pd.ExcelWriter(filename) as xlwr:
+            for item in [it for it in df]:
+                y = make_df(df, item)
+                sheetname = item
+                sheetname = re.sub(r"[\[\]\:\*\?\/\\]", '', sheetname)
+                sheetname = sheetname if len(item) < 30 else item[:30]
+                y.to_excel(xlwr, sheet_name=sheetname)
+
 
 
