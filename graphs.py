@@ -1,7 +1,6 @@
 from tkinter import Toplevel, BOTH, BOTTOM
 from matplotlib.backends.backend_tkagg import FigureCanvasTkAgg, NavigationToolbar2Tk
 from matplotlib.figure import Figure
-import matplotlib.pyplot as plt
 
 
 def show_graph(x, y, type, window, title):
@@ -16,6 +15,7 @@ def show_graph(x, y, type, window, title):
     autolabel(rects1, ax, True)
     ax.set_title(title)
     ax.set_ylim([0, max(list(y)) * 1.2])
+    fig.autofmt_xdate()
     canvas = FigureCanvasTkAgg(fig, master=graph)
     canvas.draw()
     canvas.get_tk_widget().pack(side=BOTTOM, fill=BOTH, expand=1)
@@ -26,7 +26,7 @@ def show_graph(x, y, type, window, title):
 
 
 def autolabel(rects, ax, per_flag):
-    """ функция размещения меток на столбцах диаграммы """
+    """ autoticker for diagram """
     for rect in rects:
         height = rect.get_height()
         ax.annotate(('{:d}' + ' %' if per_flag else '').format(int(height) if height > 0 else 0),
