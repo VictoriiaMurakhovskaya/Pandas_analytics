@@ -8,7 +8,7 @@ import os
 from importlib import import_module
 import pandas as pd
 
-tsk_list = ['Task #{!s}'.format(i) for i in range(2, 10)]
+tsk_list = ['Task #{!s}'.format(i) for i in range(1, 10)]
 df = pd.DataFrame()
 
 
@@ -61,7 +61,7 @@ def run_task():
     if df.empty:
         load_df()
     num = tasks.current()
-    name = 'task'+str(num + 2)
+    name = 'task'+str(num + 1)
     module = import_module(name, package=__name__)
     module.runtask(df, window)
 

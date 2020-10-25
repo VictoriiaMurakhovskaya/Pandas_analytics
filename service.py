@@ -10,6 +10,8 @@ def write_to_excel(questions, answers, sheetname):
 
     filename = fd.asksaveasfilename(defaultextension='.xlsx',
                                     filetypes=[('MS Excel files', '*.xlsx')])
+    if filename == '':
+        return
     if os.path.exists(filename):
         book = load_workbook(filename)
     writer = pd.ExcelWriter(filename, engine='openpyxl')
